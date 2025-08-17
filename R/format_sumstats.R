@@ -432,6 +432,15 @@ format_sumstats <- function(path,
                 split = TRUE, append = TRUE
             )
             sink(msgcon, type = "message") # does not support split
+
+            on.exit(
+                {
+                sink(NULL, type = "message")
+                sink(NULL, type = "output")
+                },
+                add = TRUE
+            )
+
             # add name to log_file list
             log_files[["MungeSumstats_log_msg"]] <-
                 paste0(
@@ -1151,12 +1160,6 @@ format_sumstats <- function(path,
         save_path = check_save_out$save_path,
         nrows = 5L
     )
-
-    # if user wanted log of messages remember to unsink at end
-    if (log_mungesumstats_msgs) {
-        sink(NULL, type = "message")
-        sink(NULL, type = "output")
-    }
 
     if (return_data) {
         message("Returning data directly.")
